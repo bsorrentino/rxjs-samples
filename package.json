@@ -1,0 +1,35 @@
+{
+  "name": "rxjs-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {
+    "connect": "^3.4.1",
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-typescript": "^2.12.1",
+    "gulp-watch": "^4.3.5",
+    "jspm": "^0.16.31",
+    "open": "0.0.5",
+    "require-dir": "^0.3.0",
+    "serve-static": "^1.10.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bsorrentino <bartolomeo.sorrentino@gmail.com> (http://soulsoftware-bsc.blogspot.it/)",
+  "license": "ISC",
+  "jspm": {
+    "dependencies": {
+      "jquery": "npm:jquery@^2.2.2",
+      "rxjs": "npm:rxjs-es@^5.0.0-beta.3",
+      "rxjs-es": "npm:rxjs-es@^5.0.0-beta.3"
+    },
+    "devDependencies": {
+      "typescript": "npm:typescript@^1.6.2"
+    }
+  }
+}
