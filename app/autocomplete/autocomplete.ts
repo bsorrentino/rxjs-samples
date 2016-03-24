@@ -1,11 +1,11 @@
 /// <reference path="../../typings/browser.d.ts" />
 
 import * as Rx  from "rxjs/Rx";
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 // Search Wikipedia for a given term
-function searchWikipedia (term) {
-    
+function searchWikipedia (term:string) {
+
     return $.ajax({
         url: 'http://en.wikipedia.org/w/api.php',
         dataType: 'jsonp',
@@ -26,10 +26,10 @@ function main() {
 
     // Get all distinct key up events from the input and only fire if long enough and distinct
     var keyup = Rx.Observable.fromEvent($input, 'keyup')
-        .map( (e) => {
+        .map( (e:Event) => {
             return e.target.value; // Project the text from the input
         })
-        .filter( (text) => {
+        .filter( (text:string) => {
             return text.length > 2; // Only if the text is longer than 2 characters
         })
         .debounceTime(750 /* Pause for 750ms */ )
@@ -37,14 +37,14 @@ function main() {
 
     keyup.switchMap(searchWikipedia)
             .subscribe(
-                (data) => {
+                (data:any) => {
                     $results
                         .empty()
-                        .append ($.map(data[1], (v) => { 
-                            return $('<li>').text(v); 
+                        .append ($.map(data[1], (v) => {
+                            return $('<li>').text(v);
                         }));
                 },
-                (error) => {
+                (error:Error) => {
                     $results
                         .empty()
                         .append($('<li>'))
@@ -52,4 +52,4 @@ function main() {
                 });
 }
 
-main(); 
+main();
