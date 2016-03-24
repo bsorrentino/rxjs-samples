@@ -1,21 +1,36 @@
 /// <reference path="../../typings/browser.d.ts" />
 
 //import * as Rx  from "rxjs/Rx";
-import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx"
-import $  from "jquery"
+import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
+import $  from "jquery";
 
 // Search Wikipedia for a given term
-function searchWikipedia (term:string) {
+function searchWikipedia(term:string):Rx.Observable<any> {
+    
+    return Rx.Observable.create( (observer:Rx.Observer<any>) => {
+        
+        let xhr = $.ajax({
+                url: '/proxy/en.wikipedia.org/w/api.php',
+                async:true,
+                data: {
+                    action: 'opensearch',
+                    format: 'json',
+                    search: term
+                },     
+                error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
+                    observer.error( errorThrown );                      
+                },
+                success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
+                    observer.next( data );   
+                    observer.complete();                                       
+                }
+        });
+        return () => {
+            
+            xhr.abort();
+        }         
+    });
 
-    return $.ajax({
-        url: 'http://en.wikipedia.org/w/api.php',
-        dataType: 'jsonp',
-        data: {
-        action: 'opensearch',
-        format: 'json',
-        search: term
-        }
-    }).promise();
 }
 
 function main() {
@@ -31,13 +46,16 @@ function main() {
             return e.target.value; // Project the text from the input
         })
         .filter( (text:string) => {
-            return text.length > 2; // Only if the text is longer than 2 characters
+            return text.length > 2 ;
         })
         .debounceTime(750 /* Pause for 750ms */ )
         .distinctUntilChanged(); // Only if the value has changed
 
-    keyup.switchMap(searchWikipedia)
-            .subscribe(
+    
+    let s = keyup.switchMap(  (term:string)=> {
+        return searchWikipedia(term);
+    })
+    .subscribe(
                 (data:any) => {
                     $results
                         .empty()

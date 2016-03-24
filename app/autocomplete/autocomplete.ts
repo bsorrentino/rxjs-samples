@@ -11,9 +11,9 @@ function searchWikipedia (term:string) {
         url: 'http://en.wikipedia.org/w/api.php',
         dataType: 'jsonp',
         data: {
-        action: 'opensearch',
-        format: 'json',
-        search: term
+            action: 'opensearch',
+            format: 'json',
+            search: term
         }
     }).promise();
 }

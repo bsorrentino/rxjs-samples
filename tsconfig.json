@@ -656,7 +656,7 @@
         "typings/main/ambient/node/index.d.ts",
         "typings/main/ambient/systemjs/index.d.ts",
         "app/autocomplete/autocomplete.ts",
-        "app/autocomplete/autocomplete1.ts",
+        "app/autocomplete/autocompleteAbort.ts",
         "app/index.ts"
     ]
 }
