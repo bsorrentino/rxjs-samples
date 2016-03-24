@@ -9,7 +9,22 @@ console.log( "MAIN", $ );
 
 try {
     
-Rx.Observable.of(1,2,3).map(x => x + '!!!');    
+var $input = $('#textInput'),
+    $results = $('#results');
+
+// Get all distinct key up events from the input and only fire if long enough and distinct
+Rx.Observable.fromEvent($input, 'keyup')
+    .map( (e:Event) => {
+        return e.target.value; // Project the text from the input
+    })
+    .filter( (text) => {
+        return text.length > 2; // Only if the text is longer than 2 characters
+    })
+    .debounceTime(750 /* Pause for 750ms */ )
+    .distinctUntilChanged() // Only if the value has changed
+    .subscribe( (e:Event )=> { 
+        console.log( "keyup", e);
+    })
     
 }
 catch( e ) {

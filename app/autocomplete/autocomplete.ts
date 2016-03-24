@@ -1,5 +1,5 @@
 
-import {Observable} from 'rxjs/Observable';
+import * as Rx  from "rxjs/Rx";
 import $ from 'jquery';
 
 // Search Wikipedia for a given term
@@ -23,29 +23,29 @@ var $input = $('#textInput'),
     $results = $('#results');
 
 // Get all distinct key up events from the input and only fire if long enough and distinct
-var keyup = Observable.fromEvent($input, 'keyup')
-    .map(function (e) {
-    return e.target.value; // Project the text from the input
+var keyup = Rx.Observable.fromEvent($input, 'keyup')
+    .map( (e) => {
+        return e.target.value; // Project the text from the input
     })
-    .filter(function (text) {
-    return text.length > 2; // Only if the text is longer than 2 characters
+    .filter( (text) => {
+        return text.length > 2; // Only if the text is longer than 2 characters
     })
-    .debounce(750 /* Pause for 750ms */ )
+    .debounceTime(750 /* Pause for 750ms */ )
     .distinctUntilChanged(); // Only if the value has changed
 
-var searcher = keyup.flatMapLatest(searchWikipedia);
+var searcher = keyup.switchMap(searchWikipedia);
 
 searcher.subscribe(
-    function (data) {
-    $results
-        .empty()
-        .append ($.map(data[1], function (v) { return $('<li>').text(v); }));
+    (data) => {
+        $results
+            .empty()
+            .append ($.map(data[1], function (v) { return $('<li>').text(v); }));
     },
-    function (error) {
-    $results
-        .empty()
-        .append($('<li>'))
-        .text('Error:' + error);
+    (error) => {
+        $results
+            .empty()
+            .append($('<li>'))
+            .text('Error:' + error);
     });
 }
 
