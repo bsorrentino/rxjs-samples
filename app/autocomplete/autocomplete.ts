@@ -1,7 +1,8 @@
 /// <reference path="../../typings/browser.d.ts" />
 
-import * as Rx  from "rxjs/Rx";
-import $ from 'jquery';
+//import * as Rx  from "rxjs/Rx";
+import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx"
+import $  from "jquery"
 
 // Search Wikipedia for a given term
 function searchWikipedia (term:string) {
@@ -18,7 +19,7 @@ function searchWikipedia (term:string) {
 }
 
 function main() {
-    
+
     console.log( "MAIN");
 
     var $input = $('#textInput'),
