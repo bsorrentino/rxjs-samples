@@ -26,5 +26,12 @@
         "rewriteTsconfig": true
     },
     "files": [
+        "typings/browser.d.ts",
+        "typings/browser/ambient/node/index.d.ts",
+        "typings/browser/ambient/systemjs/index.d.ts",
+        "typings/main.d.ts",
+        "typings/main/ambient/node/index.d.ts",
+        "typings/main/ambient/systemjs/index.d.ts",
+        "app/index.ts"
     ]
 }
