@@ -1,9 +1,11 @@
+/// <reference path="../../typings/browser.d.ts" />
 
 import * as Rx  from "rxjs/Rx";
 import $ from 'jquery';
 
 // Search Wikipedia for a given term
 function searchWikipedia (term) {
+    
     return $.ajax({
         url: 'http://en.wikipedia.org/w/api.php',
         dataType: 'jsonp',

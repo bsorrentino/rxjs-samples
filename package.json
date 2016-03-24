@@ -18,7 +18,11 @@
     "serve-static": "^1.10.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve":"gulp serve",
+    "tsi":"typings install --ambient --save",
+    "tsr":"typings remove --ambient --save",
+    "tss":"typings search --ambient"
   },
   "author": "bsorrentino <bartolomeo.sorrentino@gmail.com> (http://soulsoftware-bsc.blogspot.it/)",
   "license": "ISC",

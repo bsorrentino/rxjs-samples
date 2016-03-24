@@ -17,9 +17,9 @@
     },
     "compileOnSave": false,
     "filesGlob": [
-        "jspm_packages/npm/rxjs-es@5.0.0-beta.3/*.ts",
+        "jspm_packages/npm/rxjs-es@5.0.0-beta.3/**/*.ts",
         "typings/**/*.ts",
-        "app/*.ts"
+        "app/**/*.ts"
     ],
     "exclude": [],
     "atom": {
