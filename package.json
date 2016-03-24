@@ -2,7 +2,7 @@
   "name": "rxjs-sample",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app/index.html",
   "dependencies": {
     "bootstrap": "^3.3.6"
   },
@@ -25,10 +25,10 @@
   "jspm": {
     "dependencies": {
       "jquery": "npm:jquery@^2.2.2",
-      "rxjs": "npm:rxjs-es@^5.0.0-beta.3",
-      "rxjs-es": "npm:rxjs-es@^5.0.0-beta.3"
+      "rxjs": "npm:rxjs@^5.0.0-beta.3"
     },
     "devDependencies": {
+      "ts": "github:frankwallis/plugin-typescript@^4.0.2",
       "typescript": "npm:typescript@^1.6.2"
     }
   }

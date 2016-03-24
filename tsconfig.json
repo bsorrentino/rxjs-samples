@@ -17,7 +17,7 @@
     },
     "compileOnSave": false,
     "filesGlob": [
-        "jspm_modules/npm/rxjs-es/*.d.ts",
+        "jspm_packages/npm/rxjs-es@5.0.0-beta.3/*.ts",
         "typings/**/*.ts",
         "app/*.ts"
     ],

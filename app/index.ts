@@ -1,4 +1,5 @@
-/// <reference path="../node_modules/rx/ts/rx.d.ts"/>
+
+import Rx from 'rxjs/Rx';
 
 var source = Rx.Observable
     .interval(500 /* ms */)
