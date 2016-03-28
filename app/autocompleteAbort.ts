@@ -14,8 +14,7 @@ class Wikipedia  {
             this.xhr.abort();
             console.log( "canceled!" );
             this.xhr = null;
-        }
-                
+        }               
     }
     
 
