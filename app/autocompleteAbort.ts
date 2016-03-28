@@ -4,7 +4,8 @@
 import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
 import $  from "jquery";
 
-class Wikipedia {
+
+class Wikipedia  {
 
     private xhr:JQueryXHR;
 
@@ -16,6 +17,8 @@ class Wikipedia {
         }
                 
     }
+    
+
     // Search Wikipedia for a given term
     rxSearch(term:string):Rx.Observable<any> {
         
@@ -65,7 +68,7 @@ function main() {
         .filter( (text:string) => {
             return text.length > 2 ;
         })
-        .debounceTime(1 /* Pause for 750ms */ )
+        .debounceTime(750 /* Pause for 750ms */ )
         .distinctUntilChanged() // Only if the value has changed
         .switchMap(  (term:string)=> {
             return wikipedia.rxSearch(term);
