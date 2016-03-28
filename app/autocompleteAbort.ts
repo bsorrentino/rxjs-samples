@@ -7,7 +7,7 @@ import $  from "jquery";
 
 class Wikipedia  {
 
-    private xhr:JQueryXHR;
+    private xhr:$.JQueryXHR;
 
     private cancel() {
         if( this.xhr != null ) {
@@ -34,10 +34,10 @@ class Wikipedia  {
                         format: 'json',
                         search: term
                     },     
-                    error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
+                    error: (jqXHR: $.JQueryXHR, textStatus: string, errorThrown: string) => {
                         observer.error( errorThrown );                      
                     },
-                    success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
+                    success: (data: any, textStatus: string, jqXHR: $.JQueryXHR) => {
                         observer.next( data );   
                         observer.complete();                                       
                     }
