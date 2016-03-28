@@ -1,13 +1,13 @@
-/// <reference path="../../typings/browser.d.ts" />
+/// <reference path="../typings/browser.d.ts" />
 
 //import * as Rx  from "rxjs/Rx";
-import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
+import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
 import $  from "jquery";
 
 
 class Wikipedia  {
 
-    private xhr:$.JQueryXHR;
+    private xhr:JQueryXHR;
 
     private cancel() {
         if( this.xhr != null ) {
@@ -34,10 +34,10 @@ class Wikipedia  {
                         format: 'json',
                         search: term
                     },     
-                    error: (jqXHR: $.JQueryXHR, textStatus: string, errorThrown: string) => {
+                    error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
                         observer.error( errorThrown );                      
                     },
-                    success: (data: any, textStatus: string, jqXHR: $.JQueryXHR) => {
+                    success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
                         observer.next( data );   
                         observer.complete();                                       
                     }
@@ -45,7 +45,17 @@ class Wikipedia  {
             return () => { // On Unsubscribe            
                 this.cancel();
             }         
-        });
+        })
+        .retryWhen( (errors: Rx.Observable<any>) => {
+            return errors.scan( (errorCount:number, err:any) => {
+                                return errorCount + 1;
+                        }, 0)
+                        .takeWhile((errorCount) => {
+                            return errorCount < 5;
+                        })
+                        .delay(1000);
+                    })
+                    ;
 
     }
     
