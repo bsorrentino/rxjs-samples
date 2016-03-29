@@ -71,7 +71,7 @@ function main() {
     // Get all distinct key up events from the input and only fire if long enough and distinct
     Rx.Observable.fromEvent($input, 'keyup')
         .map( (e:Event) => {
-            return e.target.value; // Project the text from the input
+            return e.target['value']; // Project the text from the input
         })
         .filter( (text:string) => {
             return text.length > 2 ;
