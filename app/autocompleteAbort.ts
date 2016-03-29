@@ -17,7 +17,6 @@ class Wikipedia  {
         }               
     }
     
-
     // Search Wikipedia for a given term
     rxSearch(term:string):Rx.Observable<any> {
         

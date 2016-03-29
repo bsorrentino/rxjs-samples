@@ -1,7 +1,7 @@
 /// <reference path="../../typings/browser.d.ts" />
 
 //import * as Rx  from "rxjs/Rx";
-import * as Rx from "../../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx"
+import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx"
 import $  from "jquery"
 
 // Search Wikipedia for a given term
