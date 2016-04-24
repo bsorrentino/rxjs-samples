@@ -1,0 +1,15 @@
+@startuml
+participant Publisher
+participant Subscription
+participant Subscriber
+participant Application
+
+
+Application -> Publisher : subscribe
+Publisher -> Subscriber : onSubscribe
+Subscriber -> Subscription : request(n)
+Subscription -> Subscriber : onNext(v)
+Subscription -> Subscriber : onNext(v)
+Subscription -> Subscriber : onComplete()
+Subscription -> Subscriber : onError(e)
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+participant Observable
+participant Subscription
+participant Observer
+participant Application
+
+
+Application -> Observable : subscribe
+Observable -> Observer : onSubscribe
+Observer -> Subscription : request(n)
+Subscription -> Observer : onNext(v)
+Subscription -> Observer : onNext(v)
+Subscription -> Observer : onComplete()
+Subscription -> Observer : onError(e)
+@enduml
