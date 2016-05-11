@@ -1,4 +1,4 @@
-/// <reference path="../../typings/browser.d.ts" />
+/// <reference path="../typings/browser.d.ts" />
 
 //import * as Rx  from "rxjs/Rx";
 import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx"
@@ -6,16 +6,16 @@ import $  from "jquery"
 
 // Search Wikipedia for a given term
 function searchWikipedia (term:string) {
-
-    return $.ajax({
-        url: 'http://en.wikipedia.org/w/api.php',
-        dataType: 'jsonp',
-        data: {
-            action: 'opensearch',
-            format: 'json',
-            search: term
-        }
-    }).promise();
+    return Rx.Observable.fromPromise(
+        $.ajax({
+            url: 'http://en.wikipedia.org/w/api.php',
+            dataType: 'jsonp',
+            data: {
+                action: 'opensearch',
+                format: 'json',
+                search: term
+            }
+    }));
 }
 
 function main() {
@@ -28,7 +28,7 @@ function main() {
     // Get all distinct key up events from the input and only fire if long enough and distinct
     var keyup = Rx.Observable.fromEvent($input, 'keyup')
         .map( (e:Event) => {
-            return e.target.value; // Project the text from the input
+            return e.target['value']; // Project the text from the input
         })
         .filter( (text:string) => {
             return text.length > 2; // Only if the text is longer than 2 characters
