@@ -8,7 +8,8 @@ var gulp = require('gulp'),
     serveStatic = require('serve-static'),
     openResource = require('open'),
     Proxy = require('gulp-connect-proxy'),
-    gconnect = require('gulp-connect')
+    gconnect = require('gulp-connect'),
+    util = require('util')
 ;
 
 var port = 5555;
@@ -28,7 +29,7 @@ gulp.task('serve', [/*'build.dev'*/], function() {
   app = connect().use( serveStatic(staticPath) );
   
   http.createServer(app).listen(port, function() {
-    openResource('http://localhost:' + port);
+    openResource( util.format('http://localhost:%d/app/autocomplete.html',port));
   });
 });
 
@@ -37,10 +38,12 @@ gulp.task("servep", function() {
 	gconnect.server({
 	  root: staticPath,
 	  port: port,
-          middleware: function (connect, opt) {
-	      opt.route = '/proxy';
-	      var proxy = new Proxy.https(opt);
-	      return [proxy];
+    middleware: function (connect, opt) {
+	        opt.route = '/proxy';
+	        var proxy = new Proxy.https(opt);
+	        return [proxy];
 	  }
 	});
+  openResource( util.format('http://localhost:%d/app/autocomplete.html',port));
+
 });
