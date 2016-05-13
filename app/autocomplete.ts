@@ -16,14 +16,19 @@ function main() {
      
      -keyup1--keyup12---keyup13----keyup14---keyup15----->
          |       |         |          |         |
-     ---------------------------------------------------->
+                   MAP( event => value )
+         |       |         |          |         |
+     ---v1-------v2--------v3---------v3--------v4------->
      
      */
     Rx.Observable.fromEvent($input, 'keyup')
+        .map( (e:Event) => {
+            return e.target['value']; // Project the text from the input
+        })
         .subscribe(
             (e:Event) => {
                 console.log( "event", e );
-            });
+        });
 }
 
 main();
