@@ -1,7 +1,6 @@
 'use strict';
 
-var PATH = require('./PATH'),
-    gulp = require('gulp'),
+var gulp = require('gulp'),
     watch = require('gulp-watch'),
     join = require('path').join,
     http = require('http'),
@@ -17,7 +16,7 @@ var port = 5555;
 // --------------
 // Serve dev.
 
-var staticPath = join(__dirname, '..', PATH.dest.all);
+var staticPath = join(__dirname, '..', "/");
 
 gulp.task('serve', [/*'build.dev'*/], function() {
   var app;
