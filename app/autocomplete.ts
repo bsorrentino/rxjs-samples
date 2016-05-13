@@ -8,7 +8,7 @@ import $ from "jquery";
 
 function main() {
 
-    console.log( "STEP1");
+    console.log( "STEP2");
 
     var $input = $('#textInput');
 
