@@ -29,7 +29,7 @@ function main() {
      */
     Rx.Observable.fromEvent($input, 'keyup')
         .map( (e:Event) => {
-            return e.target['value']; // Project the text from the input
+            return e.target['value']; // map event to input text
         })
         .filter( (text:string) => {
             return text.length > 2; // Only if the text is longer than 2 characters
