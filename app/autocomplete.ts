@@ -13,16 +13,19 @@ function main() {
     var $input = $('#textInput');
 
     /**
-     
-     -keyup1--keyup12---keyup13----keyup14---keyup15----->
+
+     -keyup1--keyup2----keyup3-----keyup4----keyup5------>
          |       |         |          |         |
                    MAP( event => value )
          |       |         |          |         |
-     ---v1-------v2--------v3---------v3--------v4------->
+     ---v1-------v2--------v3---------v4--------v5------->
                    FILTER( condition )
                  |         |                    |
-     ------------v2--------v3-------------------v4------->
-     
+     ------------v2--------v3-------------------v5------->
+                   DEBOUNCE( time )
+                           |                    |
+     ----------------------v3-------------------v5------->
+
      */
     Rx.Observable.fromEvent($input, 'keyup')
         .map( (e:Event) => {
@@ -30,7 +33,8 @@ function main() {
         })
         .filter( (text:string) => {
             return text.length > 2; // Only if the text is longer than 2 characters
-        })        
+        })
+        .debounceTime(750 /* Pause for 750ms */ )
         .subscribe(
             (e:Event) => {
                 console.log( "event", e );
