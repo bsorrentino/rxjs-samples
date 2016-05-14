@@ -6,9 +6,28 @@ import $ from "jquery";
 
 
 
+/**
+  Search Wikipedia for a given term
+
+  Create an observable that emit the result of the related promise
+*/
+function searchWikipedia(term:string) {
+    return Rx.Observable.fromPromise(
+        $.ajax({
+            url: 'http://en.wikipedia.org/w/api.php',
+            dataType: 'jsonp',
+            data: {
+                action: 'opensearch',
+                format: 'json',
+                search: term
+            }
+         })) as Rx.Observable<[any]> ;
+}
+
+
 function main() {
 
-    console.log( "STEP5");
+    console.log( "STEP6");
 
     var $input = $('#textInput');
 
@@ -28,6 +47,9 @@ function main() {
                         DISTINCT
                            |                    |
      ----------------------v3-------------------v5------->
+                SWITCHMAP( [V] --D--|-> )
+                           |                    |
+     ----------------------D3-------------------D5------->
 
      */
     Rx.Observable.fromEvent($input, 'keyup')
@@ -39,9 +61,10 @@ function main() {
         })
         .debounceTime(750 /* Pause for 750ms */ )
         .distinctUntilChanged() // Only if the value has changed
+        .switchMap(searchWikipedia)
         .subscribe(
-            (e:Event) => {
-                console.log( "event", e );
+            (data:[any]) => {
+                console.log( "result", data[1] );
         });
 }
 
