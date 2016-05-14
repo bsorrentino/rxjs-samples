@@ -8,7 +8,7 @@ import $ from "jquery";
 
 function main() {
 
-    console.log( "STEP3");
+    console.log( "STEP5");
 
     var $input = $('#textInput');
 
@@ -25,6 +25,9 @@ function main() {
                    DEBOUNCE( time )
                            |                    |
      ----------------------v3-------------------v5------->
+                        DISTINCT
+                           |                    |
+     ----------------------v3-------------------v5------->
 
      */
     Rx.Observable.fromEvent($input, 'keyup')
@@ -35,6 +38,7 @@ function main() {
             return text.length > 2; // Only if the text is longer than 2 characters
         })
         .debounceTime(750 /* Pause for 750ms */ )
+        .distinctUntilChanged() // Only if the value has changed
         .subscribe(
             (e:Event) => {
                 console.log( "event", e );
