@@ -27,9 +27,10 @@ function searchWikipedia(term:string) {
 
 function main() {
 
-    console.log( "STEP6");
+    console.log( "STEP7");
 
-    var $input = $('#textInput');
+    var $input = $('#textInput'),
+         $results = $('#results');
 
     /**
 
@@ -47,25 +48,26 @@ function main() {
                         DISTINCT
                            |                    |
      ----------------------v3-------------------v5------->
-                SWITCHMAP( [V] --D--|-> )
+                  SWITCHMAP( [V] --D--|-> )
                            |                    |
-     ----------------------D3-------------------D5------->
+     ----------------------D1-------------------D5------->
 
      */
     Rx.Observable.fromEvent($input, 'keyup')
-        .map( (e:Event) => {
-            return e.target['value']; // Project the text from the input
-        })
-        .filter( (text:string) => {
-            return text.length > 2; // Only if the text is longer than 2 characters
-        })
-        .debounceTime(750 /* Pause for 750ms */ )
+        .map( (e:Event) => e.target['value'] ) // map event to input text 
+        .filter( (text:string) => text.length > 2 )  // Only if the text is longer than 2 characters
+        .debounceTime(750 ) // Pause for 750ms
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap(searchWikipedia)
+        .do( () => $results.empty() ) // Clear the output
+        .switchMap( (term) => searchWikipedia(term) )
         .subscribe(
-            (data:[any]) => {
-                console.log( "result", data[1] );
-        });
+            (data) => $results
+                        .append( $.map(data[1], (v) => $('<li>').text(v)) )
+        ,
+            (error:Error) => $results
+                              .append($('<li>'))
+                              .text('Error:' + error)
+        );
 }
 
 main();
