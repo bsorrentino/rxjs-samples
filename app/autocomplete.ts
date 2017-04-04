@@ -11,8 +11,8 @@ import $ from "jquery";
 
   Create an observable that emit the result of the related promise
 */
-function searchWikipedia(term:string) {
-    return Rx.Observable.fromPromise(
+function searchWikipedia(term:string):Rx.Observable<[any]> {
+    return Rx.Observable.fromPromise<[any]>(
         $.ajax({
             url: 'http://en.wikipedia.org/w/api.php',
             dataType: 'jsonp',
@@ -21,7 +21,7 @@ function searchWikipedia(term:string) {
                 format: 'json',
                 search: term
             }
-         })) as Rx.Observable<[any]> ;
+         })) ;
 }
 
 
@@ -47,14 +47,18 @@ function main() {
      ----------------------v3-------------------v5------->
                         DISTINCT
                            |                    |
+                  DO( clear result )    DO( clear result )
+                           |                    |
      ----------------------v3-------------------v5------->
                   SWITCHMAP( [V] --D--|-> )
                            |                    |
-     ----------------------D1-------------------D5------->
+     -----------------------------D1----------------D2--->
+                                  |                 |
+                        NEXT(append result)    NEXT(append result)
 
      */
     Rx.Observable.fromEvent($input, 'keyup')
-        .map( (e:Event) => e.target['value'] ) // map event to input text 
+        .map( (e:Event) => e.target['value'] ) // map event to input text
         .filter( (text:string) => text.length > 2 )  // Only if the text is longer than 2 characters
         .debounceTime(750 ) // Pause for 750ms
         .distinctUntilChanged() // Only if the value has changed
