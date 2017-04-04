@@ -11,8 +11,8 @@ import $ from "jquery";
 
   Create an observable that emit the result of the related promise
 */
-function searchWikipedia(term:string) {
-    return Rx.Observable.fromPromise(
+function searchWikipedia(term:string):Rx.Observable<[any]> {
+    return Rx.Observable.fromPromise<[any]>(
         $.ajax({
             url: 'http://en.wikipedia.org/w/api.php',
             dataType: 'jsonp',
@@ -21,7 +21,7 @@ function searchWikipedia(term:string) {
                 format: 'json',
                 search: term
             }
-         })) as Rx.Observable<[any]> ;
+         })) ;
 }
 
 
@@ -48,8 +48,8 @@ function main() {
                            |                    |
      ----------------------v3-------------------v5------->
                 SWITCHMAP( [V] --D--|-> )
-                           |                    |
-     ----------------------D3-------------------D5------->
+                                                |
+     -------------------------------------------D5------->
 
      */
     Rx.Observable.fromEvent($input, 'keyup')
