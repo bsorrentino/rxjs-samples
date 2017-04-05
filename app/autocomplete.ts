@@ -18,29 +18,33 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
         }
     }
 
-    return Rx.Observable.create( (observer:Rx.Observer<any>) => {
+    cancel();
 
-        cancel();
+    return Rx.Observable.create( (observer:Rx.Observer<any>) => {
 
         lastRequest.xhr = $.ajax({
                 url: '/proxy/en.wikipedia.org/w/api.php',
                 async:true,
+                timeout: 1500,
+                cache:false,
                 data: {
                     action: 'opensearch',
                     format: 'json',
                     search: term
                 },
                 error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
+                      console.log( "error", textStatus, errorThrown);
                       observer.error( errorThrown );
                 },
                 success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
+                    console.log( "data", data);
                     observer.next( data );
                     observer.complete();
                 }
-        });
-        return () => { // On Unsubscribe
-            cancel();
-        }
+          });
+          return () => { // On Unsubscribe
+              cancel();
+          }
     });
 
   }
@@ -53,16 +57,20 @@ function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQuery
 
   return rxSearch( term, lastRequest )
         .retryWhen( (errors: Rx.Observable<any>) => {
-            return errors.scan( (errorCount:number, err:any) => errorCount + 1, 0)
-                        .takeWhile((errorCount) => errorCount < retryFor )
-                        .delay(1000);
-                    })
-                    ;
+            return errors.scan( (errorCount:number, err:any) => {
+              if( errorCount >= retryFor ) {
+                throw err;
+              }
+              return errorCount + 1;
+            } , 0)
+            .delay(1000);
+          })
+        ;
 }
 
 function main() {
 
-    console.log( "STEP8");
+    console.log( "STEP9");
 
     var $input = $('#textInput'),
         $results = $('#results')
@@ -79,7 +87,14 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => rxSearch( term, lastXHR ) )
+        .switchMap( (term:string) => rxSearchAndRetry( 4, term, lastXHR ) )
+        .catch( (error:any, caught) => {
+            $results
+                .empty()
+                .append($('<li>'))
+                .text('Error:' + error);
+            return caught;
+        })
         .subscribe(
             (data:any) => {
                 $results
@@ -87,13 +102,8 @@ function main() {
                     .append ($.map(data[1], (v) => {
                         return $('<li>').text(v);
                     }));
-            },
-            (error:Error) => {
-                $results
-                    .empty()
-                    .append($('<li>'))
-                    .text('Error:' + error);
-            });
+            }
+        );
 }
 
 main();
