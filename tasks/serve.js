@@ -26,7 +26,7 @@ gulp.task('serve', [/*'build.dev'*/], function() {
   });
 
   app = connect().use( serveStatic(staticPath) );
-  
+
   http.createServer(app).listen(port, function() {
     openResource('http://localhost:' + port);
   });
@@ -43,4 +43,11 @@ gulp.task("servep", function() {
 	      return [proxy];
 	  }
 	});
+
+  /*
+  watch('./app/**', function() {
+    gconnect.reload();
+  });
+  */
+  
 });

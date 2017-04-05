@@ -10,13 +10,17 @@
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 <!--
   <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap-responsive.min.css">
--->  
+-->
 </head>
 <body>
   <div class="container">
     <div class="page-header">
       <h1>RxJS Autocomplete example</h1>
-      <p class="lead">Example to show combining input events such as keyup with Ajax requests</p>
+      <p class="lead">
+        Example to show combining input events such as keyup with Ajax requests
+        <br/>
+        Search and abort pending call - <b>Using Object Oriented stateful approach</b>
+      </p>
     </div>
     <div class="row-fluid">
       <form role="form">
@@ -30,7 +34,7 @@
       <ul id="results"></ul>
     </div>
   </div>
-  
+
   <script src="/jspm_packages/system.js"></script>
   <script src="/config.js"></script>
   <script>
