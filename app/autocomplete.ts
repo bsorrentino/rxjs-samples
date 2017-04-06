@@ -21,7 +21,8 @@ function searchWikipedia(term:string):Rx.Observable<[any]> {
                 format: 'json',
                 search: term
             }
-         })) ;
+         }) as any) 
+        ;
 }
 
 
