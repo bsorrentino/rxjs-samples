@@ -58,7 +58,31 @@ function main() {
       xhr:null
     }
 
-    // Get all distinct key up events from the input and only fire if long enough and distinct
+    /**
+
+     -keyup1--keyup2----keyup3-----keyup4----keyup5------>
+         |       |         |          |         |
+                   MAP( event => value )
+         |       |         |          |         |
+     ---v1-------v2--------v3---------v4--------v5------->
+                   FILTER( condition )
+                 |         |                    |
+     ------------v2--------v3-------------------v5------->
+                   DEBOUNCE( time )
+                           |                    |
+     ----------------------v3-------------------v5------->
+                        DISTINCT
+                           |                    |
+                  DO( clear result )    DO( clear result )
+                           |                    |
+     ----------------------v3-------------------v5------->
+                  SWITCHMAP( [V] --D--|-> )
+                           |                    |
+     -----------------------------D1----------------D2--->
+                                  |                 |
+                        NEXT(append result)    NEXT(append result)
+
+    */
     Rx.Observable.fromEvent($input, 'keyup')
         .map( (e:Event) => e.target['value'] ) // get the text from the input
         .filter( (text:string) => text.length > 2)
