@@ -33,11 +33,11 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
                     search: term
                 },
                 error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
-                      console.log( "error", textStatus, errorThrown);
+                      //console.log( "error", textStatus, errorThrown);
                       observer.error( errorThrown );
                 },
                 success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
-                    console.log( "data", data);
+                    //console.log( "data", data);
                     observer.next( data );
                     observer.complete();
                 }
@@ -77,7 +77,7 @@ function main() {
         ;
     const DEBOUNCE_TIME = 50;
 
-    let lastXHR = {
+    let lastXHR:any = {
       xhr:null
     }
 
