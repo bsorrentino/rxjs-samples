@@ -57,7 +57,8 @@ function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQuery
 
     /**
 
-     ----X-----------------X--------------------R--|----->
+                       RXSEARCH()
+     ----X-----------------X--------------------R1-|----->
          |       ^         |          ^         
          |       |         |          |         
              RETRYWHEN( errorCount < retryFor )
