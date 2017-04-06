@@ -44,16 +44,6 @@ class Wikipedia  {
                 this.cancel();
             }
         })
-        .retryWhen( (errors: Rx.Observable<any>) => {
-            return errors.scan( (errorCount:number, err:any) => {
-                                return errorCount + 1;
-                        }, 0)
-                        .takeWhile((errorCount) => {
-                            return errorCount < 5;
-                        })
-                        .delay(1000);
-                    })
-                    ;
 
     }
 
