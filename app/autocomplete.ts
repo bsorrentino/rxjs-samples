@@ -62,10 +62,10 @@ function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQuery
          |       |         |          |         
              RETRYWHEN( errorCount < retryFor )
          |       |         |          |         
-     --- 1-------+---------2----------+----------------->
+     --- 1-------+---------2----------+------------------>
                       DELAY( 10000 )
-                 |                    |
-     --------------------------------------------------->
+         |       |         |          |
+     ------------D1-------------------D2----------------->
 
     */
     return rxSearch( term, lastRequest )
