@@ -45,21 +45,6 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
 
   }
 
-/**
- * Search Wikipedia for a given term and retry on failure
- *
- */
-function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> {
-
-  return rxSearch( term, lastRequest )
-        .retryWhen( (errors: Rx.Observable<any>) => {
-            return errors.scan( (errorCount:number, err:any) => errorCount + 1, 0)
-                        .takeWhile((errorCount) => errorCount < retryFor )
-                        .delay(1000);
-                    })
-                    ;
-}
-
 function main() {
 
     console.log( "STEP8");
@@ -69,7 +54,7 @@ function main() {
         ;
     const DEBOUNCE_TIME = 50;
 
-    let lastXHR = {
+    let lastXHR:any = {
       xhr:null
     }
 
