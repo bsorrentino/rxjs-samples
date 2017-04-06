@@ -77,7 +77,7 @@ function main() {
         ;
     const DEBOUNCE_TIME = 50;
 
-    let lastXHR = {
+    let lastXHR:any = {
       xhr:null
     }
 
