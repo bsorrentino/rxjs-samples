@@ -70,6 +70,8 @@ function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQuery
 
     */
     return rxSearch( term, lastRequest )
+            .retry(retryFor)
+            /*
             .retryWhen( (errors: Rx.Observable<any>) => {
                 return errors.scan( (errorCount:number, err:any) => {
                     if( errorCount >= retryFor ) {
@@ -78,7 +80,8 @@ function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQuery
                     return errorCount + 1;
                 } , 0)
                 .delay(1000);
-                })
+            })
+            */
             ;
 }
 
