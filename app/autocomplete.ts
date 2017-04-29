@@ -13,7 +13,7 @@ import $ from "jquery";
 */
 function searchWikipedia(term:string):Rx.Observable<[any]> {
     return Rx.Observable.fromPromise<[any]>(
-        $.ajax({
+        <any>$.ajax({
             url: 'http://en.wikipedia.org/w/api.php',
             dataType: 'jsonp',
             data: {
