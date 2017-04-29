@@ -57,7 +57,7 @@ function main() {
         $results = $('#results'),
         wikipedia = new Wikipedia()
         ;
-    const DEBOUNCE_TIME = 750;
+    const DEBOUNCE_TIME = 50;
 
     /**
 
