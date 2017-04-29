@@ -128,7 +128,8 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => rxSearchAndRetry( 4, term, lastXHR ) )
+        //.switchMap( (term:string) => rxSearchAndRetry( 4, term, lastXHR ) )
+        .switchMap( (term:string) => rxSearch(term, lastXHR ).retry(3) )
         .catch( (error:any, caught) => {
             $results
                 .empty()
