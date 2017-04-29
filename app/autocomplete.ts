@@ -64,7 +64,9 @@ function main() {
         .debounceTime(750 ) // Pause for 750ms
         .distinctUntilChanged() // Only if the value has changed
         .do( () => $results.empty() ) // Clear the output
-        .switchMap( (term) => searchWikipedia(term) )
+        .flatMap( (term) => searchWikipedia(term) )
+        .do( (elements) => console.log(elements) )
+        //.map( (elements) => elements[1] )
         .subscribe(
             (data) => $results
                         .append( $.map(data[1], (v) => $('<li>').text(v)) )
