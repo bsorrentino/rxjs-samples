@@ -49,42 +49,6 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
 
   }
 
-/**
- * Search Wikipedia for a given term and retry on failure
- *
- */
-function rxSearchAndRetry( retryFor:number, term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> {
-
-    /**
-
-                       RXSEARCH()
-     ----X-----------------X--------------------R1-|----->
-         |       ^         |          ^         
-         |       |         |          |         
-             RETRYWHEN( errorCount < retryFor )
-         |       |         |          |         
-     --- 1-------+---------2----------+------------------>
-                      DELAY( 10000 )
-         |       |         |          |
-     ------------D1-------------------D2----------------->
-
-    */
-    return rxSearch( term, lastRequest )
-            .retry(retryFor)
-            /*
-            .retryWhen( (errors: Rx.Observable<any>) => {
-                return errors.scan( (errorCount:number, err:any) => {
-                    if( errorCount >= retryFor ) {
-                    throw err;
-                    }
-                    return errorCount + 1;
-                } , 0)
-                .delay(1000);
-            })
-            */
-            ;
-}
-
 function main() {
 
     console.log( "STEP9");
@@ -128,7 +92,6 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        //.switchMap( (term:string) => rxSearchAndRetry( 4, term, lastXHR ) )
         .switchMap( (term:string) => rxSearch(term, lastXHR ).retry(3) )
         .catch( (error:any, caught) => {
             $results
