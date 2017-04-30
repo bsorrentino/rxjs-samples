@@ -15,3 +15,15 @@ $(npm bin)/jspm install
 ```
 .bin\jspm install
 ```
+
+## Run 
+
+**MacOSX**
+```
+$(npm bin)/gulp servep
+```
+
+**Windows**
+```
+.bin\gulp servep
+```
