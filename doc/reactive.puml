@@ -1,0 +1,35 @@
+@startuml
+participant Application
+participant Observable
+participant Subscription
+participant Observer
+
+create Observable
+Application -> Observable : create
+|||
+== Activation ==
+|||
+create Observer
+Application -> Observer : create
+Application -> Observable :  subscribe(Observer)
+create Subscription
+Observable -> Subscription : create
+Observable -> Observer :  onSubscribe(Subscription)
+|||
+== Push data ==
+|||
+Observer -> Subscription : request(n)
+note over Observer
+ Backpressure management
+end note
+loop n times
+  Subscription -\ Observer : onNext(v)
+  |||
+end
+... when stream end ...
+Subscription -\ Observer : onComplete()
+|||
+== In case of Error ==
+...
+Subscription -\ Observer : onError(e)
+@enduml

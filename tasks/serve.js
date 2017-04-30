@@ -1,20 +1,22 @@
 'use strict';
 
-var PATH = require('./PATH'),
-    gulp = require('gulp'),
+var gulp = require('gulp'),
     watch = require('gulp-watch'),
     join = require('path').join,
-    //yargs = require('yargs'),
     http = require('http'),
     connect = require('connect'),
     serveStatic = require('serve-static'),
-    openResource = require('open')
+    openResource = require('open'),
+    Proxy = require('gulp-connect-proxy'),
+    gconnect = require('gulp-connect')
 ;
 
 var port = 5555;
 
 // --------------
 // Serve dev.
+
+var staticPath = join(__dirname, '..', "/");
 
 gulp.task('serve', [/*'build.dev'*/], function() {
   var app;
@@ -23,9 +25,29 @@ gulp.task('serve', [/*'build.dev'*/], function() {
     //gulp.start('build.dev');
   });
 
-  app = connect().use(serveStatic(join(__dirname, '..', PATH.dest.all)));
+  app = connect().use( serveStatic(staticPath) );
+
   http.createServer(app).listen(port, function() {
     openResource('http://localhost:' + port);
   });
 });
 
+// A local web server for dev convenience
+gulp.task("servep", function() {
+	gconnect.server({
+	  root: staticPath,
+	  port: port,
+          middleware: function (connect, opt) {
+	      opt.route = '/proxy';
+	      var proxy = new Proxy.https(opt);
+	      return [proxy];
+	  }
+	});
+
+  /*
+  watch('./app/**', function() {
+    gconnect.reload();
+  });
+  */
+  
+});
