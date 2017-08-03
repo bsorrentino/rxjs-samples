@@ -83,7 +83,7 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => retryWithDelay( rxSearch( term ), 3, 1000 ) )
+        .switchMap( (term:string) => rxSearch( term ).retry(3) )
         .catch( (error:any, caught) => {
             $results
                 .empty()
