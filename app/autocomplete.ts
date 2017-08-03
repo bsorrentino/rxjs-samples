@@ -33,9 +33,11 @@ class Wikipedia  {
                         search: term
                     },
                     error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
+                        this.xhr = null;
                         observer.error( errorThrown );
                     },
                     success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
+                        this.xhr = null;
                         observer.next( data );
                         observer.complete();
                     }
@@ -77,7 +79,7 @@ function main() {
                   DO( clear result )    DO( clear result )
                            |                    |
      ----------------------v3-------------------v5------->
-                  SWITCHMAP( [V] --D--|-> )
+                  FLATMAP( [V] --D--|-> )
                            |                    |
      -----------------------------D1----------------D2--->
                                   |                 |
@@ -89,7 +91,7 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => wikipedia.rxSearch(term) )
+        .flatMap( (term:string) => wikipedia.rxSearch(term).catch( Rx.Observable.empty ) )
         .subscribe(
             (data:any) => {
                 $results
