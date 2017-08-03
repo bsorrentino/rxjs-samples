@@ -53,10 +53,6 @@ function main() {
         ;
     const DEBOUNCE_TIME = 50;
 
-    let lastXHR:any = {
-      xhr:null
-    }
-
     /**
 
      -keyup1--keyup2----keyup3-----keyup4----keyup5------>
