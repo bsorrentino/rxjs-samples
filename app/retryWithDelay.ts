@@ -1,9 +1,9 @@
 import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
 
 
-Rx.Observable.prototype.retryWithDelay = function(retryFor:number, delayTime:number) {
+export default function retryWithDelay<T>( _self:Rx.Observable<T>, retryFor:number, delayTime:number) {
 
-    return this.retryWhen( (errors: Rx.Observable<any>) => {
+    return _self.retryWhen( (errors: Rx.Observable<any>) => {
                 return errors.scan( (errorCount:number, err:any) => {
                     if( errorCount >= retryFor ) {
                         throw err;

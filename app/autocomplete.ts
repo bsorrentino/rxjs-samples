@@ -2,28 +2,18 @@
 
 //import * as Rx  from "rxjs/Rx";
 import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
-import "./retryWithDelay";
+import retryWithDelay from "./retryWithDelay";
 import $  from "jquery";
 
 /**
  * Search Wikipedia for a given term
  *
  */
-function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> {
-
-    function cancel() {
-        if( lastRequest.xhr!=null && !lastRequest.xhr.status) {
-          lastRequest.xhr.abort();
-          console.log( "canceled!" );
-          lastRequest.xhr = null;
-        }
-    }
-
-    cancel();
+function rxSearch(term:string ):Rx.Observable<any> {
 
     return Rx.Observable.create( (observer:Rx.Observer<any>) => {
 
-        lastRequest.xhr = $.ajax({
+        let xhr = $.ajax({
                 url: '/proxy/en.wikipedia.org/w/api.php',
                 async:true,
                 timeout: 1500,
@@ -44,7 +34,11 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
                 }
           });
           return () => { // On Unsubscribe
-              cancel();
+            if( xhr!=null && !xhr.status) {
+                xhr.abort();
+                console.log( "canceled!" );    
+            }
+
           }
     });
 
@@ -93,7 +87,7 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => rxSearch( term, lastXHR ).retryWithDelay( 3, 1000 ) )
+        .switchMap( (term:string) => retryWithDelay( rxSearch( term ), 3, 1000 ) )
         .catch( (error:any, caught) => {
             $results
                 .empty()
