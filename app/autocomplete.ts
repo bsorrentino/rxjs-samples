@@ -32,10 +32,12 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
                 },
                 error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
                       observer.error( errorThrown );
+                      lastRequest.xhr = null;
                 },
                 success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
                     observer.next( data );
                     observer.complete();
+                    lastRequest.xhr = null;
                 }
         });
         return () => { // On Unsubscribe
@@ -88,7 +90,7 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => rxSearch( term, lastXHR ) )
+        .flatMap( (term:string) => rxSearch( term, lastXHR ).catch( Rx.Observable.empty ) )
         .subscribe(
             (data:any) => {
                 $results
