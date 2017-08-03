@@ -8,21 +8,11 @@ import $  from "jquery";
  * Search Wikipedia for a given term
  *
  */
-function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> {
-
-    function cancel() {
-        if( lastRequest.xhr!=null && !lastRequest.xhr.status) {
-          lastRequest.xhr.abort();
-          console.log( "canceled!" );
-          lastRequest.xhr = null;
-        }
-    }
-
-    cancel();
+function rxSearch(term:string ):Rx.Observable<any> {
 
     return Rx.Observable.create( (observer:Rx.Observer<any>) => {
 
-        lastRequest.xhr = $.ajax({
+        let xhr = $.ajax({
                 url: '/proxy/en.wikipedia.org/w/api.php',
                 async:true,
                 timeout: 1500,
@@ -43,7 +33,11 @@ function rxSearch(term:string, lastRequest:{xhr:JQueryXHR} ):Rx.Observable<any> 
                 }
           });
           return () => { // On Unsubscribe
-              cancel();
+            if( xhr!=null && !xhr.status) {
+                xhr.abort();
+                console.log( "canceled!" );
+            }
+
           }
     });
 
@@ -57,10 +51,6 @@ function main() {
         $results = $('#results')
         ;
     const DEBOUNCE_TIME = 50;
-
-    let lastXHR:any = {
-      xhr:null
-    }
 
     /**
 
@@ -92,7 +82,7 @@ function main() {
         .filter( (text:string) => text.length > 2)
         .debounceTime(DEBOUNCE_TIME)
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => rxSearch(term, lastXHR ).retry(3) )
+        .switchMap( (term:string) => rxSearch(term) )
         .catch( (error:any, caught) => {
             $results
                 .empty()
