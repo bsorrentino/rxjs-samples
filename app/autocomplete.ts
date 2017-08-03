@@ -47,7 +47,7 @@ function main() {
                         DISTINCT
                            |                    |
      ----------------------v3-------------------v5------->
-                SWITCHMAP( [V] --D--|-> )
+                FLATMAP( [V] --D--|-> )
                                                 |
      -------------------------------------------D5------->
 
@@ -61,7 +61,7 @@ function main() {
         })
         .debounceTime(750) // Pause for 750ms
         .distinctUntilChanged() // Only if the value has changed
-        .switchMap(searchWikipedia)
+        .flatMap(searchWikipedia)
         .subscribe(
             (data:[any]) => {
                 console.log( "result", data[1] );
