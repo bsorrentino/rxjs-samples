@@ -13,5 +13,12 @@ $(npm bin)/jspm install
 
 **Windows**
 ```
-.bin\jspm install
+node_modules\.bin\jspm install
 ```
+
+## Run 
+
+```
+npm run servep
+```
+
