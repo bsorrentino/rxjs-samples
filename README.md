@@ -25,6 +25,8 @@ node_modules\.bin\jspm install
 
 ## Run 
 
+**Every following command is executed under the main project folder**
+
 **MacOSX**
 ```
 $(npm bin)/gulp servep
