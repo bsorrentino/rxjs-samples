@@ -13,17 +13,12 @@ $(npm bin)/jspm install
 
 **Windows**
 ```
-.bin\jspm install
+node_modules\.bin\jspm install
 ```
 
 ## Run 
 
-**MacOSX**
 ```
-$(npm bin)/gulp servep
+npm run servep
 ```
 
-**Windows**
-```
-.bin\gulp servep
-```
