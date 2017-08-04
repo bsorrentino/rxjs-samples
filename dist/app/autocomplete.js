@@ -1,7 +1,7 @@
 System.register(["../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx", "./retryWithDelay", "jquery"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Rx, jquery_1;
+    var Rx, retryWithDelay_1, jquery_1;
     function rxSearch(term) {
         return Rx.Observable.create(function (observer) {
             var xhr = jquery_1.default.ajax({
@@ -34,15 +34,12 @@ System.register(["../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx", "./retryWithDelay"
         console.log("STEP9");
         var $input = jquery_1.default('#textInput'), $results = jquery_1.default('#results');
         var DEBOUNCE_TIME = 50;
-        var lastXHR = {
-            xhr: null
-        };
         Rx.Observable.fromEvent($input, 'keyup')
             .map(function (e) { return e.target['value']; })
             .filter(function (text) { return text.length > 2; })
             .debounceTime(DEBOUNCE_TIME)
             .distinctUntilChanged()
-            .switchMap(function (term) { return rxSearch(term); })
+            .switchMap(function (term) { return retryWithDelay_1.default(rxSearch(term), 3, 1000); })
             .catch(function (error, caught) {
             $results
                 .empty()
@@ -63,7 +60,9 @@ System.register(["../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx", "./retryWithDelay"
             function (Rx_1) {
                 Rx = Rx_1;
             },
-            function (_1) {},
+            function (retryWithDelay_1_1) {
+                retryWithDelay_1 = retryWithDelay_1_1;
+            },
             function (jquery_1_1) {
                 jquery_1 = jquery_1_1;
             }],
