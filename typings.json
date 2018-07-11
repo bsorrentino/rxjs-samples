@@ -1,7 +1,0 @@
-{
-  "ambientDependencies": {
-    "jquery": "registry:dt/jquery#1.10.0+20160316155526",
-    "node": "registry:dt/node#4.0.0+20160319033040",
-    "systemjs": "registry:dt/systemjs#0.18.4+20160316155526"
-  }
-}

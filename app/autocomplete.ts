@@ -1,7 +1,5 @@
-/// <reference path="../typings/browser.d.ts" />
-
-//import * as Rx  from "rxjs/Rx";
-import * as Rx from "../jspm_packages/npm/rxjs@5.0.0-beta.3/Rx";
+import { Observable, Observer, fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import retryWithDelay from "./retryWithDelay";
 import $  from "jquery";
 
@@ -9,9 +7,9 @@ import $  from "jquery";
  * Search Wikipedia for a given term
  *
  */
-function rxSearch(term:string ):Rx.Observable<any> {
+function rxSearch(term:string ):Observable<any> {
 
-    return Rx.Observable.create( (observer:Rx.Observer<any>) => {
+    return Observable.create( (observer:Observer<any>) => {
 
         let xhr = $.ajax({
                 url: '/proxy/en.wikipedia.org/w/api.php',
@@ -23,11 +21,11 @@ function rxSearch(term:string ):Rx.Observable<any> {
                     format: 'json',
                     search: term
                 },
-                error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
+                error: (jqXHR: $.JQueryXHR, textStatus: string, errorThrown: string) => {
                       //console.log( "error", textStatus, errorThrown);
                       observer.error( errorThrown );
                 },
-                success: (data: any, textStatus: string, jqXHR: JQueryXHR) => {
+                success: (data: any, textStatus: string, jqXHR: $.JQueryXHR) => {
                     //console.log( "data", data);
                     observer.next( data );
                     observer.complete();
@@ -78,19 +76,21 @@ function main() {
                         NEXT(append result)    NEXT(append result)
 
     */
-    Rx.Observable.fromEvent($input, 'keyup')
-        .map( (e:Event) => e.target['value'] ) // get the text from the input
-        .filter( (text:string) => text.length > 2)
-        .debounceTime(DEBOUNCE_TIME)
-        .distinctUntilChanged() // Only if the value has changed
-        .switchMap( (term:string) => retryWithDelay( rxSearch( term ), 3, 1000 ) )
-        .catch( (error:any, caught) => {
-            $results
-                .empty()
-                .append($('<li>'))
-                .text('Error:' + error);
-            return caught;
-        })
+    fromEvent($input, 'keyup')
+        .pipe(
+            map( (e:Event) => e.target['value'] ), // get the text from the input
+            filter( (text:string) => text.length > 2),
+            debounceTime(DEBOUNCE_TIME),
+            distinctUntilChanged(), // Only if the value has changed
+            switchMap( (term:string) => retryWithDelay( rxSearch( term ), 3, 1000 )
+                .pipe(
+                    catchError( (error:any, caught) => {
+                        $results
+                            .empty()
+                            .append($('<li>'))
+                            .text('Error:' + error);
+                        return caught;
+                    }))))
         .subscribe(
             (data:any) => {
                 $results

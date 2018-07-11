@@ -1,42 +1,26 @@
 {
-  "name": "rxjs-sample",
-  "version": "1.1.0",
-  "description": "",
-  "main": "app/index.html",
-  "dependencies": {
-    "bootstrap": "^3.3.6"
-  },
-  "devDependencies": {
-    "connect": "^3.4.1",
-    "gulp": "^3.9.1",
-    "gulp-connect": "^3.2.1",
-    "gulp-connect-proxy": "git+https://github.com/bsorrentino/gulp-connect-proxy.git#master",
-    "gulp-plumber": "^1.1.0",
-    "gulp-typescript": "^2.12.1",
-    "gulp-watch": "^4.3.5",
-    "jspm": "^0.16.31",
-    "open": "0.0.5",
-    "require-dir": "^0.3.0",
-    "serve-static": "^1.10.2"
+  "name": "rxjs-samples",
+  "version": "1.0.0",
+  "description": "## Install",
+  "main": "config.js",
+  "directories": {
+    "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "gulp serve",
-    "servep": "gulp servep",
-    "tsi": "typings install --ambient --save",
-    "tsr": "typings remove --ambient --save",
-    "tss": "typings search --ambient"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsorrentino/rxjs-samples.git"
   },
   "author": "bsorrentino <bartolomeo.sorrentino@gmail.com> (http://soulsoftware-bsc.blogspot.it/)",
-  "license": "ISC",
-  "jspm": {
-    "dependencies": {
-      "jquery": "npm:jquery@^2.2.2",
-      "rxjs": "npm:rxjs@^5.0.0-beta.3"
-    },
-    "devDependencies": {
-      "ts": "github:frankwallis/plugin-typescript@^4.0.2",
-      "typescript": "npm:typescript@^1.6.2"
-    }
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bsorrentino/rxjs-samples/issues"
+  },
+  "homepage": "https://github.com/bsorrentino/rxjs-samples#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "rxjs": "^6.2.1"
   }
 }
